@@ -1,6 +1,6 @@
 # top_movies
 
-A new Flutter project.
+An app to list the top Rated Movies
 
 ## Getting Started
 
