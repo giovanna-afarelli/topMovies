@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedGenreId = 28;
   int currentPage = 1;
-  ScrollController _scrollController = new ScrollController();
+  int maxPage = 1;
 
   HomeController controller = HomeController(
     repository: HomeRepository(),
@@ -28,20 +28,31 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     controller.getPopularMovies();
     controller.getGenres();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        currentPage = currentPage++;
-        controller.getPopularMoviesNextPage(currentPage);
-      }
-    });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _getNextPage() {
+    currentPage++;
+    print(currentPage);
+    if (currentPage < maxPage) {
+      setState(() {
+        controller.getPopularMoviesNextPage(currentPage);
+      });
+    }
+  }
+
+  void _getPreviousPage() {
+    currentPage--;
+    print(currentPage);
+    if (currentPage >= 1) {
+      setState(() {
+        controller.getPopularMoviesNextPage(currentPage);
+      });
+    }
   }
 
   Widget _createDropDownMenu() {
@@ -82,6 +93,7 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (controller.popularResponseHasResults) {
+          maxPage = controller.popularResponse!.value!.totalPages!;
           return ListView.builder(
             shrinkWrap: true,
             itemCount: controller.popularResponse!.value!.results!.length,
@@ -92,7 +104,6 @@ class _HomePageState extends State<HomePage> {
                     .elementAt(index),
               );
             },
-            controller: _scrollController,
           );
         } else if (controller.popularResponseHasError) {
           return Center(
@@ -102,6 +113,39 @@ class _HomePageState extends State<HomePage> {
           return Container();
       },
     );
+  }
+
+  List<Widget> _createFooterButtons() {
+    if (currentPage > 1 && currentPage < maxPage) {
+      return <Widget>[
+        ElevatedButton.icon(
+          onPressed: _getPreviousPage,
+          icon: Icon(Icons.arrow_back),
+          label: Text("${currentPage - 1}"),
+        ),
+        ElevatedButton.icon(
+          onPressed: _getNextPage,
+          icon: Icon(Icons.arrow_forward),
+          label: Text("${currentPage + 1}"),
+        ),
+      ];
+    } else if (currentPage == 1) {
+      return <Widget>[
+        ElevatedButton.icon(
+          onPressed: _getNextPage,
+          icon: Icon(Icons.arrow_forward),
+          label: Text("${currentPage + 1}"),
+        ),
+      ];
+    } else {
+      return <Widget>[
+        ElevatedButton.icon(
+          onPressed: _getPreviousPage,
+          icon: Icon(Icons.arrow_back),
+          label: Text("${currentPage - 1}"),
+        ),
+      ];
+    }
   }
 
   @override
@@ -123,6 +167,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      persistentFooterButtons: _createFooterButtons(),
     );
   }
 }
