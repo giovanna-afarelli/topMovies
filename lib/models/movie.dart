@@ -1,6 +1,6 @@
 class Movie {
   bool? video;
-  double? voteAverage;
+  num? voteAverage;
   String? overview;
   int? id;
   String? title;

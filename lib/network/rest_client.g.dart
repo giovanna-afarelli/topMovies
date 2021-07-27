@@ -80,34 +80,34 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<Movie> getMovieDetail(movieId) async {
+  Future<MovieDetail> getMovieDetail(movieId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Movie>(
+        _setStreamType<MovieDetail>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options,
                     '/movie/$movieId?api_key=e5178c731962e0f2fbcf5fdd9ecf8a65',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Movie.fromJson(_result.data!);
+    final value = MovieDetail.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<Movie> getMovieImages(movieId) async {
+  Future<MovieImages> getMovieImages(movieId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        Movie>(Options(
+        MovieImages>(Options(
             method: 'GET', headers: <String, dynamic>{}, extra: _extra)
         .compose(_dio.options,
             '/movie/$movieId/images?api_key=e5178c731962e0f2fbcf5fdd9ecf8a65',
             queryParameters: queryParameters, data: _data)
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Movie.fromJson(_result.data!);
+    final value = MovieImages.fromJson(_result.data!);
     return value;
   }
 

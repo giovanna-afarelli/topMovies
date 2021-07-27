@@ -1,4 +1,5 @@
-import 'package:top_movies/models/movie.dart';
+import 'package:top_movies/models/movie_detail.dart';
+import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/network/rest_client.dart';
 
 class MovieDetailRepository {
@@ -6,7 +7,11 @@ class MovieDetailRepository {
 
   MovieDetailRepository({required this.restClient});
 
-  Future<Movie> getMovieDetail(int movieId) async {
+  Future<MovieDetail> getMovieDetail(int movieId) async {
     return restClient.getMovieDetail(movieId);
+  }
+
+  Future<MovieImages> getMovieImages(int movieId) async {
+    return restClient.getMovieImages(movieId);
   }
 }

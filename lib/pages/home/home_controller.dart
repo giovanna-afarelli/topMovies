@@ -1,6 +1,5 @@
 import 'package:mobx/mobx.dart';
 import 'package:top_movies/models/api_response.dart';
-import 'package:top_movies/models/genres.dart';
 import 'package:top_movies/models/genres_api_response.dart';
 
 import 'home_repository.dart';

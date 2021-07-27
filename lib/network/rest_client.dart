@@ -3,6 +3,8 @@ import 'package:retrofit/retrofit.dart';
 import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres_api_response.dart';
 import 'package:top_movies/models/movie.dart';
+import 'package:top_movies/models/movie_detail.dart';
+import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/utils/settings.dart';
 
 part 'rest_client.g.dart';
@@ -32,9 +34,9 @@ abstract class RestClient {
   //DETAIL SCREEN
   //Get movie details
   @GET('/movie/{movie_id}?api_key=$_apikey')
-  Future<Movie> getMovieDetail(@Path("movie_id") int movieId);
+  Future<MovieDetail> getMovieDetail(@Path("movie_id") int movieId);
 
   //Get movie images
   @GET('/movie/{movie_id}/images?api_key=$_apikey')
-  Future<Movie> getMovieImages(@Path("movie_id") int movieId);
+  Future<MovieImages> getMovieImages(@Path("movie_id") int movieId);
 }
