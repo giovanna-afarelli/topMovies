@@ -58,11 +58,13 @@ class HomeController with Store {
   }
 
   @action
-  Future getPopularMoviesbyGenre(int genreId) async {
-    popularResponseByGenre = popularResponse!.value!.results!
-        .where((element) => element.genreIds!.contains(genreId))
-        .toList();
-    popularResponse!.value!.results = popularResponseByGenre;
+  Future getPopularMoviesbyGenre(int genreId, int page) async {
+    try {
+      popularResponse = ObservableFuture(repository.getPopularMoviesByGenre(
+          "popularity.desc", page, 10, genreId.toString()));
+    } catch (error) {
+      popularResponse = ObservableFuture.value(ApiResponse());
+    }
   }
 
   @action

@@ -23,6 +23,16 @@ abstract class RestClient {
   @GET('/movie/popular?api_key=$_apikey')
   Future<ApiResponse> getPopularMovies();
 
+  //Popular movies
+  @GET(
+      '/discover/movie?api_key=$_apikey&sort_by={sort}&page={page}&vote_average.lte={voteL}&with_genres={genres}')
+  Future<ApiResponse> getPopularMoviesByGenre(
+    @Path("sort") String sort,
+    @Path("page") int page,
+    @Path("voteL") int voteL,
+    @Path("genres") String genres,
+  );
+
   //Popular movies next page
   @GET('/movie/popular?api_key=$_apikey&page={page}')
   Future<ApiResponse> getPopularMoviesNextPage(@Path("page") int page);

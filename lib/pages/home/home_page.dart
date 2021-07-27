@@ -70,7 +70,9 @@ class _HomePageState extends State<HomePage> {
             onChanged: (int? data) {
               setState(() {
                 selectedGenreId = data!;
-                controller.getPopularMoviesbyGenre(selectedGenreId);
+                currentPage = 1;
+                controller.getPopularMoviesbyGenre(
+                    selectedGenreId, currentPage);
               });
             },
             items: controller.genresResponse!.value!.genres!

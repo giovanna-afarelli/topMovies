@@ -48,6 +48,22 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<ApiResponse> getPopularMoviesByGenre(sort, page, voteL, genres) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
+        ApiResponse>(Options(
+            method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+        .compose(_dio.options,
+            '/discover/movie?api_key=e5178c731962e0f2fbcf5fdd9ecf8a65&sort_by=$sort&page=$page&vote_average.lte=$voteL&with_genres=$genres',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ApiResponse> getPopularMoviesNextPage(page) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

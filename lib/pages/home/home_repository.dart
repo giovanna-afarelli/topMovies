@@ -16,6 +16,11 @@ class HomeRepository {
     return restClient.getPopularMovies();
   }
 
+  Future<ApiResponse> getPopularMoviesByGenre(
+      String sort, int page, int voteL, String genres) async {
+    return restClient.getPopularMoviesByGenre(sort, page, voteL, genres);
+  }
+
   Future<ApiResponse> getPopularMoviesNextPage(int page) async {
     return restClient.getPopularMoviesNextPage(page);
   }
