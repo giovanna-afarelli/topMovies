@@ -54,72 +54,64 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       backgroundColor: ColorsConstants.backgroundColor,
-      body: Column(
-        children: [
-          controller.genresResponseHasResults
-              ? DropDownWidget(
-                  genresList: controller.genresResponse!.value!,
-                  onChanged: (value) {
-                    selectedGenreId = value;
-                  },
-                )
-              : SizedBox(),
-          RefreshIndicator(
-            onRefresh: () {
-              return Future(() {
-                // Load the data again
-                setState(() {
-                  controller.getPopularMovies();
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            controller.genresResponseHasResults
+                ? DropDownWidget(
+                    genresList: controller.genresResponse!.value!,
+                    onChanged: (value) {
+                      selectedGenreId = value;
+                    },
+                  )
+                : SizedBox(),
+            RefreshIndicator(
+              onRefresh: () {
+                return Future(() {
+                  // Load the data again
+                  setState(() {
+                    controller.getPopularMovies();
+                  });
                 });
-              });
-            },
-            child: Column(
-              children: [
-                Observer(
-                  builder: (_) {
-                    if (controller.popularResponseIsLoading) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+              },
+              child: Observer(
+                builder: (_) {
+                  if (controller.popularResponseIsLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-                    if (controller.popularResponseHasResults) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 2),
-                        child: AspectRatio(
-                          aspectRatio: 16 / 8,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller
-                                .popularResponse!.value!.results!.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return MovieItemWidget(
-                                movie: controller
-                                    .popularResponse!.value!.results!
-                                    .elementAt(index),
-                              );
-                            },
-                            controller: _scrollController,
-                          ),
-                        ),
-                      );
-                      ;
-                    }
+                  if (controller.popularResponseHasResults) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:
+                          controller.popularResponse!.value!.results!.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return MovieItemWidget(
+                          movie: controller.popularResponse!.value!.results!
+                              .elementAt(index),
+                        );
+                      },
+                      controller: _scrollController,
+                    );
+                  }
 
-                    if (controller.popularResponseHasError) {
-                      return Center(
-                        child: Text("Erro"),
-                      );
-                    }
+                  if (controller.popularResponseHasError) {
+                    return Center(
+                      child: Text("Erro"),
+                    );
+                  }
 
-                    return Container();
-                  },
-                ),
-              ],
+                  return Container();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
