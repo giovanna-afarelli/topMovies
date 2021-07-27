@@ -6,6 +6,7 @@ class Strings {
   static const voteAverage = "Average score";
   static const voteCount = "Number of reviews";
 
-  //HOME PAGE
+  //SCREEN TITLES
   static const homePageTitle = "Top Movies";
+  static const favoritesTitle = "Favorite Movies";
 }

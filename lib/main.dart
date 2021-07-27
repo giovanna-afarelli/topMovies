@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:top_movies/pages/home/home_page.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_page.dart';
+import 'package:top_movies/pages/tabs/tabs_page.dart';
 import 'package:top_movies/utils/app_routes.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
         ),
       ),
-      home: HomePage(),
+      home: TabScreen(),
       routes: {
         AppRoutes.MOVIEDETAIL: (ctx) => MovieDetailPage(),
       },
