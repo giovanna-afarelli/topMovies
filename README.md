@@ -1,16 +1,10 @@
 # top_movies
 
-An app to list the top Rated Movies
+An app to list the top Rated Movies, usint The Movie DB API (
+https://api.themoviedb.org/3/)
 
-## Getting Started
+## Packages
 
-This project is a starting point for a Flutter application.
+This app uses Mobx for state managment, Hive for local store, Retrofit and Dio for network access.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
