@@ -1,11 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres_api_response.dart';
 import 'package:top_movies/network/rest_client.dart';
 
 class HomeRepository {
-  final RestClient restClient;
+  final RestClient restClient = RestClient(Dio());
 
-  HomeRepository({required this.restClient});
+  HomeRepository();
 
   Future<ApiResponse> getTrendingMovies(String time) async {
     return restClient.getTrendingMovies(time);

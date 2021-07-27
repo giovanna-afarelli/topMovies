@@ -23,9 +23,7 @@ class MovieDetailPage extends StatefulWidget {
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
   MovieDetailController controller = MovieDetailController(
-    repository: MovieDetailRepository(
-      restClient: RestClient(Dio()),
-    ),
+    repository: MovieDetailRepository(),
   );
 
   @override

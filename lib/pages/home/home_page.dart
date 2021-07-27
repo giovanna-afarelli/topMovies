@@ -20,9 +20,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController _scrollController = new ScrollController();
 
   HomeController controller = HomeController(
-    repository: HomeRepository(
-      restClient: RestClient(Dio()),
-    ),
+    repository: HomeRepository(),
   );
 
   @override
