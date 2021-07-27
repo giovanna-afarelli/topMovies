@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Top Movies',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.amber,
         textTheme: TextTheme(
           headline1: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),

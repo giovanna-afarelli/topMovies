@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres_api_response.dart';
+import 'package:top_movies/models/movie.dart';
 
 import 'home_repository.dart';
 
@@ -10,29 +11,12 @@ class HomeController with Store {
   HomeController({required this.repository});
 
   @observable
-  ObservableFuture<ApiResponse>? trendingResponse;
-
-  @observable
   ObservableFuture<ApiResponse>? popularResponse;
+
+  List<Movie> popularResponseByGenre = <Movie>[];
 
   @observable
   ObservableFuture<GenresApiResponse>? genresResponse;
-
-  @computed
-  bool get trendingResponseHasResults =>
-      trendingResponse != null &&
-      trendingResponse?.status == FutureStatus.fulfilled &&
-      trendingResponse?.result != null;
-
-  @computed
-  bool get trendingResponseIsLoading =>
-      trendingResponse != null &&
-      trendingResponse?.status == FutureStatus.pending;
-
-  @computed
-  bool get trendingResponseHasError =>
-      trendingResponse != null &&
-      trendingResponse?.status == FutureStatus.rejected;
 
   @computed
   bool get popularResponseHasResults =>
@@ -65,21 +49,20 @@ class HomeController with Store {
       genresResponse != null && genresResponse?.status == FutureStatus.rejected;
 
   @action
-  Future getTrendingMovies(String time) async {
-    try {
-      trendingResponse = ObservableFuture(repository.getTrendingMovies(time));
-    } catch (error) {
-      trendingResponse = ObservableFuture.value(ApiResponse());
-    }
-  }
-
-  @action
   Future getPopularMovies() async {
     try {
       popularResponse = ObservableFuture(repository.getPopularMovies());
     } catch (error) {
       popularResponse = ObservableFuture.value(ApiResponse());
     }
+  }
+
+  @action
+  Future getPopularMoviesbyGenre(int genreId) async {
+    popularResponseByGenre = popularResponse!.value!.results!
+        .where((element) => element.genreIds!.contains(genreId))
+        .toList();
+    popularResponse!.value!.results = popularResponseByGenre;
   }
 
   @action
