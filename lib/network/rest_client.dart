@@ -4,6 +4,7 @@ import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres_api_response.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
+import 'package:top_movies/models/video_response.dart';
 import 'package:top_movies/utils/settings.dart';
 
 part 'rest_client.g.dart';
@@ -62,4 +63,8 @@ abstract class RestClient {
     @Path("query") String query,
     @Path("page") int page,
   );
+
+  //Get movie videos
+  @GET('/movie/{movie_id}/videos?api_key=$_apikey')
+  Future<VideoResponse> getMovieVideos(@Path("movie_id") int movieId);
 }

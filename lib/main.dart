@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_page.dart';
 import 'package:top_movies/pages/tabs/tabs_page.dart';
+import 'package:top_movies/pages/video_player/video_player.dart';
 import 'package:top_movies/utils/app_routes.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       home: TabScreen(),
       routes: {
         AppRoutes.MOVIEDETAIL: (ctx) => MovieDetailPage(),
+        AppRoutes.VIDEOPLAYER: (ctx) => VideoPage(),
       },
     );
   }

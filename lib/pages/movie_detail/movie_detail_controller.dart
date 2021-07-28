@@ -4,6 +4,8 @@ import 'package:top_movies/models/backdrops.dart';
 import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
+import 'package:top_movies/models/video_model.dart';
+import 'package:top_movies/models/video_response.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
 
 class MovieDetailController with Store {
@@ -16,6 +18,9 @@ class MovieDetailController with Store {
 
   @observable
   ObservableFuture<MovieImages>? movieImagesResponse;
+
+  @observable
+  ObservableFuture<VideoResponse>? movieVideosResponse;
 
   @observable
   ObservableFuture<ApiResponse>? movieRecommendationsResponse;
@@ -51,6 +56,22 @@ class MovieDetailController with Store {
   bool get movieImagesResponseHasError =>
       movieImagesResponse != null &&
       movieImagesResponse?.status == FutureStatus.rejected;
+
+  @computed
+  bool get movieVideosResponseHasResults =>
+      movieVideosResponse != null &&
+      movieVideosResponse?.status == FutureStatus.fulfilled &&
+      movieVideosResponse?.result != null;
+
+  @computed
+  bool get movieVideosResponseIsLoading =>
+      movieVideosResponse != null &&
+      movieVideosResponse?.status == FutureStatus.pending;
+
+  @computed
+  bool get movieVideosResponseHasError =>
+      movieVideosResponse != null &&
+      movieVideosResponse?.status == FutureStatus.rejected;
 
   @computed
   bool get movieRecommendationsResponseHasResults =>
@@ -89,6 +110,10 @@ class MovieDetailController with Store {
   @computed
   int get movieRecommendationsLenght => movieRecommendations.length;
 
+  //Movie videos
+  @computed
+  List<Videos> get movieVideos => movieVideosResponse!.value!.results!;
+
   @action
   Future getMovieDetail({required int movieId}) async {
     try {
@@ -106,6 +131,16 @@ class MovieDetailController with Store {
           ObservableFuture(repository.getMovieImages(movieId));
     } catch (error) {
       movieImagesResponse = ObservableFuture.value(MovieImages());
+    }
+  }
+
+  @action
+  Future getMovieVideos({required int movieId}) async {
+    try {
+      movieVideosResponse =
+          ObservableFuture(repository.getMovieVideos(movieId));
+    } catch (error) {
+      movieVideosResponse = ObservableFuture.value(VideoResponse());
     }
   }
 

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
+import 'package:top_movies/models/video_model.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_controller.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
+import 'package:top_movies/utils/app_routes.dart';
 import 'package:top_movies/utils/colors.dart';
 import 'package:top_movies/utils/functions.dart';
 import 'package:top_movies/utils/strings.dart';
@@ -26,6 +28,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     controller.getMovieDetail(movieId: 0);
     controller.getMovieImages(movieId: 0);
     controller.getMovieRecommendations(movieId: 0, page: 1);
+    controller.getMovieVideos(movieId: 0);
   }
 
   @override
@@ -224,6 +227,65 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
+  Widget _showVideoThumb() {
+    return Padding(
+      padding: EdgeInsets.all(15),
+      child: Container(
+        height: 150,
+        width: double.infinity,
+        child: Observer(
+          builder: (_) {
+            if (controller.movieVideosResponseIsLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (controller.movieVideosResponseHasResults) {
+              return InkWell(
+                onTap: () => _openVideo(context, controller.movieVideos.first),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.network(
+                      "https://img.youtube.com/vi/${controller.movieVideos.first.key}/0.jpg",
+                      fit: BoxFit.fitHeight,
+                      color: Color.fromRGBO(255, 255, 255, 0.5),
+                      colorBlendMode: BlendMode.modulate,
+                    ),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child: Image(
+                        image: AssetImage('lib/images/play.png'),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else if (controller.movieVideosResponseHasError) {
+              return Center(
+                child: Text("Erro"),
+              );
+            } else
+              return Container();
+          },
+        ),
+      ),
+    );
+  }
+
+  void _openVideo(BuildContext context, Videos video) {
+    Navigator.of(context).pushNamed(
+      AppRoutes.VIDEOPLAYER,
+      arguments: video,
+    );
+  }
+
+  Widget _space() {
+    return SizedBox(
+      height: 10.0,
+    );
+  }
+
   //Detail Screen Widget
   @override
   Widget build(BuildContext context) {
@@ -233,6 +295,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       controller.getMovieDetail(movieId: movie.id!);
       controller.getMovieImages(movieId: movie.id!);
       controller.getMovieRecommendations(movieId: movie.id!, page: 1);
+      controller.getMovieVideos(movieId: movie.id!);
     });
 
     return Scaffold(
@@ -243,9 +306,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       body: ListView(
         children: [
           _showMovieImage(movie.id!, movie.posterPath!),
-          SizedBox(
-            height: 10.0,
-          ),
+          _space(),
           Row(
             children: [
               _showMoviePoster(movie.id!, movie.posterPath!),
@@ -254,13 +315,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               ),
             ],
           ),
-          SizedBox(
-            height: 10.0,
-          ),
+          _space(),
           _showMovieOverview(),
-          SizedBox(
-            height: 15.0,
-          ),
+          _space(),
+          _showVideoThumb(),
+          _space(),
           Text(
             Strings.recommendationsTitle,
             textAlign: TextAlign.center,
@@ -269,9 +328,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
           ),
-          SizedBox(
-            height: 10.0,
-          ),
+          _space(),
           _showMovieRecommendations(),
         ],
       ),
