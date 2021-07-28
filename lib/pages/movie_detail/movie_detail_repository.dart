@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/network/rest_client.dart';
@@ -14,5 +15,9 @@ class MovieDetailRepository {
 
   Future<MovieImages> getMovieImages(int movieId) async {
     return restClient.getMovieImages(movieId);
+  }
+
+  Future<ApiResponse> getMovieRecommendations(int movieId, int page) async {
+    return restClient.getMovieRecommendations(movieId, page);
   }
 }

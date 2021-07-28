@@ -9,6 +9,7 @@ import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
 import 'package:top_movies/utils/colors.dart';
 import 'package:top_movies/utils/functions.dart';
 import 'package:top_movies/utils/strings.dart';
+import 'package:top_movies/widgets/movie_item_widget.dart';
 
 class MovieDetailPage extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     super.initState();
     controller.getMovieDetail(movieId: 0);
     controller.getMovieImages(movieId: 0);
+    controller.getMovieRecommendations(movieId: 0, page: 1);
   }
 
   @override
@@ -82,13 +84,18 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           );
         } else if (controller.movieDetailResponseHasResults) {
           MovieDetail movieDetail = controller.movieDetailResponse!.value!;
+          String formattedDate = "";
+
+          var date = DateTime.parse(movieDetail.releaseDate.toString());
+          formattedDate = "${date.day}/${date.month}/${date.year}";
+
           return Column(
             children: [
               SizedBox(
                 height: 5,
               ),
               Text(
-                "${movieDetail.title!} (${movieDetail.releaseDate})",
+                "${movieDetail.title!} ($formattedDate)",
                 style: new TextStyle(
                   color: ColorsConstants.textDefaultColor,
                   fontSize: 20,
@@ -137,6 +144,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   Strings.overviewTitle,
                   style: new TextStyle(
                       color: ColorsConstants.textDefaultColor,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -159,6 +167,60 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
+  Widget _showMovieRecommendations() {
+    return Container(
+      height: 200,
+      child: Observer(
+        builder: (_) {
+          if (controller.movieRecommendationsResponseIsLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (controller.movieRecommendationsResponseHasResults) {
+            print("aaaaa");
+            return controller
+                        .movieRecommendationsResponse!.value!.results!.length >
+                    0
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller
+                        .movieRecommendationsResponse!.value!.results!.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return MovieItemWidget(
+                        movie: controller
+                            .movieRecommendationsResponse!.value!.results!
+                            .elementAt(index),
+                        showOnlyImage: true,
+                      );
+                    },
+                  )
+                : Container(
+                    //If the collection is empty, show Empty message
+                    alignment: Alignment.center,
+                    height: 120,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10,
+                    ),
+                    child: Text(
+                      Strings.recommendationsEmpty,
+                      style: TextStyle(color: ColorsConstants.textDefaultColor),
+                    ),
+                  );
+          } else if (controller.movieRecommendationsResponseHasError) {
+            return Center(
+              child: Text(
+                "Erro",
+                style: TextStyle(color: ColorsConstants.textDefaultColor),
+              ),
+            );
+          } else
+            return Container();
+        },
+      ),
+    );
+  }
+
   //Detail Screen Widget
   @override
   Widget build(BuildContext context) {
@@ -167,6 +229,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     setState(() {
       controller.getMovieDetail(movieId: movie.id!);
       controller.getMovieImages(movieId: movie.id!);
+      controller.getMovieRecommendations(movieId: movie.id!, page: 1);
     });
 
     return Scaffold(
@@ -174,30 +237,40 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         title: Text(movie.title.toString()),
       ),
       backgroundColor: ColorsConstants.backgroundColor,
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.all(15.0),
-          child: Column(
+      body: ListView(
+        children: [
+          _showMovieImage(movie.id!, movie.posterPath!),
+          SizedBox(
+            height: 10.0,
+          ),
+          Row(
             children: [
-              _showMovieImage(movie.id!, movie.posterPath!),
-              SizedBox(
-                height: 10.0,
+              _showMoviePoster(movie.id!, movie.posterPath!),
+              Expanded(
+                child: _showMovieTitle(),
               ),
-              Row(
-                children: [
-                  _showMoviePoster(movie.id!, movie.posterPath!),
-                  Expanded(
-                    child: _showMovieTitle(),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              _showMovieOverview(),
             ],
           ),
-        ),
+          SizedBox(
+            height: 10.0,
+          ),
+          _showMovieOverview(),
+          SizedBox(
+            height: 15.0,
+          ),
+          Text(
+            Strings.recommendationsTitle,
+            textAlign: TextAlign.center,
+            style: new TextStyle(
+                color: ColorsConstants.textDefaultColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          _showMovieRecommendations(),
+        ],
       ),
     );
   }

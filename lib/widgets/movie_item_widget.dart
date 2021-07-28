@@ -7,9 +7,11 @@ import 'package:top_movies/utils/strings.dart';
 
 class MovieItemWidget extends StatelessWidget {
   final Movie movie;
+  final bool showOnlyImage;
 
   MovieItemWidget({
     required this.movie,
+    this.showOnlyImage = false,
   });
 
   void _openMovieDetail(BuildContext context, Movie movie) {
@@ -101,7 +103,12 @@ class MovieItemWidget extends StatelessWidget {
       child: Row(
         children: [
           _createMovieImage(),
-          _createMovieInfo(),
+          showOnlyImage
+              ? SizedBox(
+                  width: 0,
+                  height: 0,
+                )
+              : _createMovieInfo(),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
@@ -13,6 +14,9 @@ class MovieDetailController with Store {
 
   @observable
   ObservableFuture<MovieImages>? movieImagesResponse;
+
+  @observable
+  ObservableFuture<ApiResponse>? movieRecommendationsResponse;
 
   @computed
   bool get movieDetailResponseHasResults =>
@@ -46,6 +50,22 @@ class MovieDetailController with Store {
       movieImagesResponse != null &&
       movieImagesResponse?.status == FutureStatus.rejected;
 
+  @computed
+  bool get movieRecommendationsResponseHasResults =>
+      movieRecommendationsResponse != null &&
+      movieRecommendationsResponse?.status == FutureStatus.fulfilled &&
+      movieRecommendationsResponse?.result != null;
+
+  @computed
+  bool get movieRecommendationsResponseIsLoading =>
+      movieRecommendationsResponse != null &&
+      movieRecommendationsResponse?.status == FutureStatus.pending;
+
+  @computed
+  bool get movieRecommendationsResponseHasError =>
+      movieRecommendationsResponse != null &&
+      movieRecommendationsResponse?.status == FutureStatus.rejected;
+
   @action
   Future getMovieDetail({required int movieId}) async {
     try {
@@ -63,6 +83,17 @@ class MovieDetailController with Store {
           ObservableFuture(repository.getMovieImages(movieId));
     } catch (error) {
       movieImagesResponse = ObservableFuture.value(MovieImages());
+    }
+  }
+
+  @action
+  Future getMovieRecommendations(
+      {required int movieId, required int page}) async {
+    try {
+      movieRecommendationsResponse =
+          ObservableFuture(repository.getMovieRecommendations(movieId, page));
+    } catch (error) {
+      movieRecommendationsResponse = ObservableFuture.value(ApiResponse());
     }
   }
 }

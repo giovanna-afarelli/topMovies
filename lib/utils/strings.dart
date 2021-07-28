@@ -1,6 +1,8 @@
 class Strings {
   //MOVIES DETAILS
   static const overviewTitle = "Overview";
+  static const recommendationsTitle = "Movie Recommendations";
+  static const recommendationsEmpty = "No Recommendations";
   static const originalTitle = "Original title";
   static const popularityRanking = "Popularity ranking";
   static const voteAverage = "Average score";
