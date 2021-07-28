@@ -55,10 +55,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               child: CircularProgressIndicator(),
             );
           } else if (controller.movieImagesResponseHasResults) {
-            if (controller.movieImagesResponse!.value!.backdrops!.length >= 1) {
+            var images = controller.movieImagesResponse!.value!.backdrops!;
+            if (images.length >= 1) {
               var random = new Random();
-              var max =
-                  controller.movieImagesResponse!.value!.backdrops!.length - 1;
+              var max = images.length - 1;
               if (max < 1) {
                 max = 1;
               } else if (max > 1000) {
@@ -66,9 +66,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               }
               var index = random.nextInt(max);
               return Image.network(
-                getBackdrop(controller.movieImagesResponse!.value!.backdrops!
-                    .elementAt(index)
-                    .filePath!),
+                getBackdrop(images.elementAt(index).filePath!),
                 fit: BoxFit.fitWidth,
               );
             } else {
@@ -186,20 +184,16 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               child: CircularProgressIndicator(),
             );
           } else if (controller.movieRecommendationsResponseHasResults) {
-            print("aaaaa");
-            return controller
-                        .movieRecommendationsResponse!.value!.results!.length >
-                    0
+            var movies =
+                controller.movieRecommendationsResponse!.value!.results!;
+            return movies.length > 0
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: controller
-                        .movieRecommendationsResponse!.value!.results!.length,
+                    itemCount: movies.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return MovieItemWidget(
-                        movie: controller
-                            .movieRecommendationsResponse!.value!.results!
-                            .elementAt(index),
+                        movie: movies.elementAt(index),
                         showOnlyImage: true,
                       );
                     },

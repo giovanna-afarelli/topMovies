@@ -110,15 +110,15 @@ class _HomePageState extends State<HomePage> {
           );
         } else if (controller.popularResponseHasResults) {
           maxPage = controller.popularResponse!.value!.totalPages!;
+          var items = controller.popularResponse!.value!.results!;
           return ListView.builder(
             shrinkWrap: true,
-            itemCount: controller.popularResponse!.value!.results!.length,
+            itemCount: items.length,
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return MovieItemWidget(
-                movie: controller.popularResponse!.value!.results!
-                    .elementAt(index),
+                movie: items.elementAt(index),
               );
             },
           );
