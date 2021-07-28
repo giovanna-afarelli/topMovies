@@ -5,6 +5,6 @@ https://api.themoviedb.org/3/)
 
 ## Packages
 
-This app uses Mobx for state managment, Hive for local store, Retrofit and Dio for network access.
+This app uses Mobx for state managment, Retrofit and Dio for network access.
 
 

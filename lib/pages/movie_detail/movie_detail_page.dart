@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:top_movies/data/hive.dart';
 import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
@@ -27,35 +25,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     super.initState();
     controller.getMovieDetail(movieId: 0);
     controller.getMovieImages(movieId: 0);
-
-    _openbox();
   }
 
   @override
   void dispose() {
-    Hive.close();
     super.dispose();
-  }
-
-  _openbox() async {
-    var dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
-    Hive.registerAdapter(FavoritesAdapter());
-    Hive.registerAdapter(MoviesAdapter());
-  }
-
-  Future<void> _toggleFavorite(Movie movie) async {
-    Movies movies = Movies();
-    movies.id = movie.id;
-    movies.title = movie.title;
-    movies.voteAverage = movie.voteAverage;
-    movies.originalTitle = movie.originalTitle;
-    movies.popularity = movie.popularity;
-    movies.voteCount = movie.voteCount;
-    movies.posterPath = movie.posterPath;
-
-    var box = await Hive.openBox('favoriteBox');
-    await box.put('${movies.id}', movies);
   }
 
   Widget _showMoviePoster(int movieId, String moviePoster) {
@@ -224,12 +198,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.star),
-        onPressed: () {
-          _toggleFavorite(movie);
-        },
       ),
     );
   }

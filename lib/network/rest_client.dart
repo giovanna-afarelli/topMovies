@@ -48,4 +48,11 @@ abstract class RestClient {
   //Get movie images
   @GET('/movie/{movie_id}/images?api_key=$_apikey')
   Future<MovieImages> getMovieImages(@Path("movie_id") int movieId);
+
+  //SEARCH
+  @GET('/search/movie?api_key=$_apikey&query={query}&page={page}')
+  Future<ApiResponse> searchMovies(
+    @Path("query") String query,
+    @Path("page") int page,
+  );
 }

@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
             shrinkWrap: true,
             itemCount: controller.popularResponse!.value!.results!.length,
             scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return MovieItemWidget(
                 movie: controller.popularResponse!.value!.results!
@@ -176,7 +177,7 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
-          scrollDirection: Axis.vertical,
+          physics: const AlwaysScrollableScrollPhysics(),
           children: [
             Row(children: [
               Expanded(

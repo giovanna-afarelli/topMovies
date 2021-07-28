@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:top_movies/pages/favorites/favorites_page.dart';
 import 'package:top_movies/pages/home/home_page.dart';
+import 'package:top_movies/pages/search/search_page.dart';
 import 'package:top_movies/utils/strings.dart';
 
 class TabScreen extends StatefulWidget {
@@ -17,12 +17,12 @@ class _TabScreenState extends State<TabScreen> {
     super.initState();
     _screens = [
       {
-        "title": "1",
+        "title": Strings.homePageTitle,
         "screen": HomePage(),
       },
       {
-        "title": "2",
-        "screen": FavoritesPage(),
+        "title": Strings.searchTitle,
+        "screen": SearchPage(),
       },
     ];
   }
@@ -50,7 +50,7 @@ class _TabScreenState extends State<TabScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book_rounded),
-            label: Strings.favoritesTitle,
+            label: Strings.searchTitle,
           ),
         ],
       ),

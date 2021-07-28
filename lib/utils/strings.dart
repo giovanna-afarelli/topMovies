@@ -8,8 +8,11 @@ class Strings {
 
   //SCREEN TITLES
   static const homePageTitle = "Top Movies";
-  static const favoritesTitle = "Favorite Movies";
+  static const searchTitle = "Search Movies";
 
   //HOME PAGE
   static const selectGenreTitle = "Select a Genre: ";
+
+  //SEARCH
+  static const noImageText = "No image";
 }

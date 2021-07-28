@@ -20,22 +20,32 @@ class MovieItemWidget extends StatelessWidget {
   }
 
   Widget _createMovieImage() {
+    var img = "";
+    if (movie.posterPath != null) {
+      img = movie.posterPath!;
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
         elevation: 3,
         shadowColor: ColorsConstants.shadowColor,
         clipBehavior: Clip.hardEdge,
-        child: Hero(
-          tag: movie.id!,
-          child: Image.network(
-            getImage(movie.posterPath!),
-            fit: BoxFit.cover,
-            scale: 1.0,
-            width: 110,
-            height: 160,
-          ),
-        ),
+        child: img.isNotEmpty
+            ? Hero(
+                tag: movie.id!,
+                child: Image.network(
+                  getImage(img),
+                  fit: BoxFit.cover,
+                  scale: 1.0,
+                  width: 110,
+                  height: 160,
+                ),
+              )
+            : SizedBox(
+                height: 160,
+                width: 110,
+                child: Center(child: Text(Strings.noImageText)),
+              ),
       ),
     );
   }
