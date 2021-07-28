@@ -35,7 +35,6 @@ class _HomePageState extends State<HomePage> {
 
   void _getNextPage() {
     currentPage++;
-    print(currentPage);
     if (currentPage < maxPage) {
       setState(() {
         controller.getMovies(page: currentPage, genreId: selectedGenreId);
@@ -45,7 +44,6 @@ class _HomePageState extends State<HomePage> {
 
   void _getPreviousPage() {
     currentPage--;
-    print(currentPage);
     if (currentPage >= 1) {
       setState(() {
         controller.getMovies(page: currentPage, genreId: selectedGenreId);
@@ -64,7 +62,7 @@ class _HomePageState extends State<HomePage> {
           var items = controller.genresResponse!.value!.genres!;
           var genreSelectAll = Genres();
           genreSelectAll.id = 0;
-          genreSelectAll.name = "Todos";
+          genreSelectAll.name = "All";
           if (items.first.id != 0) {
             items.insert(0, genreSelectAll);
           }
@@ -73,10 +71,11 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 15,
-              style: TextStyle(color: Colors.red, fontSize: 18),
+              style: TextStyle(color: Colors.yellow, fontSize: 18),
+              dropdownColor: Colors.black87,
               underline: Container(
                 height: 2,
-                color: Colors.amber,
+                color: Colors.blueGrey,
               ),
               onChanged: (int? data) {
                 setState(() {
@@ -179,7 +178,24 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            _createDropDownMenu(),
+            Row(children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  child: Text(
+                    Strings.selectGenreTitle,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: ColorsConstants.textDefaultColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              _createDropDownMenu(),
+            ]),
             _createMoviesList(),
           ],
         ),
