@@ -134,6 +134,16 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.arrow_back),
           label: Text("${currentPage - 1}"),
         ),
+        SizedBox(
+          width: 25,
+          child: TextButton(
+            onPressed: null,
+            child: Text("$currentPage"),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
+        ),
         ElevatedButton.icon(
           onPressed: _getNextPage,
           icon: Icon(Icons.arrow_forward),
@@ -142,6 +152,16 @@ class _HomePageState extends State<HomePage> {
       ];
     } else if (currentPage == 1) {
       return <Widget>[
+        SizedBox(
+          width: 25,
+          child: TextButton(
+            onPressed: null,
+            child: Text("$currentPage"),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
+        ),
         ElevatedButton.icon(
           onPressed: _getNextPage,
           icon: Icon(Icons.arrow_forward),
@@ -154,6 +174,16 @@ class _HomePageState extends State<HomePage> {
           onPressed: _getPreviousPage,
           icon: Icon(Icons.arrow_back),
           label: Text("${currentPage - 1}"),
+        ),
+        SizedBox(
+          width: 25,
+          child: TextButton(
+            onPressed: null,
+            child: Text("$currentPage"),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
         ),
       ];
     }
