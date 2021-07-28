@@ -1,7 +1,4 @@
-import 'dart:io';
 import 'dart:math';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive/hive.dart';
@@ -9,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:top_movies/data/hive.dart';
 import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
-import 'package:top_movies/network/rest_client.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_controller.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
 import 'package:top_movies/utils/colors.dart';

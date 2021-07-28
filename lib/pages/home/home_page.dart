@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:top_movies/models/genres.dart';
-import 'package:top_movies/network/rest_client.dart';
 import 'package:top_movies/pages/home/home_controller.dart';
 import 'package:top_movies/pages/home/home_repository.dart';
 import 'package:top_movies/utils/colors.dart';
@@ -15,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedGenreId = 28;
+  int selectedGenreId = 0;
   int currentPage = 1;
   int maxPage = 1;
 
@@ -26,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    controller.getPopularMovies();
+    controller.getMovies(page: 1, genreId: 0);
     controller.getGenres();
   }
 
@@ -40,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     print(currentPage);
     if (currentPage < maxPage) {
       setState(() {
-        controller.getPopularMoviesNextPage(currentPage);
+        controller.getMovies(page: currentPage, genreId: selectedGenreId);
       });
     }
   }
@@ -50,41 +48,58 @@ class _HomePageState extends State<HomePage> {
     print(currentPage);
     if (currentPage >= 1) {
       setState(() {
-        controller.getPopularMoviesNextPage(currentPage);
+        controller.getMovies(page: currentPage, genreId: selectedGenreId);
       });
     }
   }
 
   Widget _createDropDownMenu() {
-    return controller.genresResponseHasResults
-        ? DropdownButton<int>(
-            value: selectedGenreId,
-            icon: Icon(Icons.arrow_drop_down),
-            iconSize: 24,
-            elevation: 15,
-            style: TextStyle(color: Colors.red, fontSize: 18),
-            underline: Container(
-              height: 2,
-              color: Colors.amber,
-            ),
-            onChanged: (int? data) {
-              setState(() {
-                selectedGenreId = data!;
-                currentPage = 1;
-                controller.getPopularMoviesbyGenre(
-                    selectedGenreId, currentPage);
-              });
-            },
-            items: controller.genresResponse!.value!.genres!
-                .map<DropdownMenuItem<int>>((Genres genre) {
-              return DropdownMenuItem<int>(
-                value: genre.id,
-                child: Text(genre.name!),
-              );
-            }).toList())
-        : SizedBox(
-            height: 0,
+    return Observer(
+      builder: (_) {
+        if (controller.genresResponseIsLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
           );
+        } else if (controller.genresResponseHasResults) {
+          var items = controller.genresResponse!.value!.genres!;
+          var genreSelectAll = Genres();
+          genreSelectAll.id = 0;
+          genreSelectAll.name = "Todos";
+          if (items.first.id != 0) {
+            items.insert(0, genreSelectAll);
+          }
+          return DropdownButton<int>(
+              value: selectedGenreId,
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 24,
+              elevation: 15,
+              style: TextStyle(color: Colors.red, fontSize: 18),
+              underline: Container(
+                height: 2,
+                color: Colors.amber,
+              ),
+              onChanged: (int? data) {
+                setState(() {
+                  selectedGenreId = data!;
+                  currentPage = 1;
+                  controller.getMovies(
+                      page: currentPage, genreId: selectedGenreId);
+                });
+              },
+              items: items.map<DropdownMenuItem<int>>((Genres genre) {
+                return DropdownMenuItem<int>(
+                  value: genre.id,
+                  child: Text(genre.name!),
+                );
+              }).toList());
+        } else if (controller.genresResponseHasError) {
+          return Center(
+            child: Text("Erro"),
+          );
+        } else
+          return Container();
+      },
+    );
   }
 
   Widget _createMoviesList() {

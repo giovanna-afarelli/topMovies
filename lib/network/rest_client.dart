@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres_api_response.dart';
-import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/utils/settings.dart';

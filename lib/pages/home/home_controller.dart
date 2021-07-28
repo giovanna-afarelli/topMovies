@@ -49,6 +49,19 @@ class HomeController with Store {
       genresResponse != null && genresResponse?.status == FutureStatus.rejected;
 
   @action
+  Future getMovies({required int page, required int genreId}) async {
+    if (genreId == 0) {
+      if (page <= 1) {
+        getPopularMovies();
+      } else {
+        getPopularMoviesNextPage(page);
+      }
+    } else {
+      getPopularMoviesbyGenre(genreId, page);
+    }
+  }
+
+  @action
   Future getPopularMovies() async {
     try {
       popularResponse = ObservableFuture(repository.getPopularMovies());
