@@ -33,6 +33,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     super.dispose();
   }
 
+  //Loads the movie poster
   Widget _showMoviePoster(int movieId, String moviePoster) {
     return Container(
       height: 300,
@@ -46,6 +47,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
+  //Loads ramdom image (backdrop) from the movie
   Widget _showMovieImage(int movieId, String moviePoster) {
     return Container(
       child: Observer(
@@ -55,10 +57,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               child: CircularProgressIndicator(),
             );
           } else if (controller.movieImagesResponseHasResults) {
-            var images = controller.movieImagesResponse!.value!.backdrops!;
-            if (images.length >= 1) {
+            if (controller.moviesBackdropsIsNotEmpty) {
               var random = new Random();
-              var max = images.length - 1;
+              var max = controller.moviesBackdropsLenght - 1;
               if (max < 1) {
                 max = 1;
               } else if (max > 1000) {
@@ -66,7 +67,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               }
               var index = random.nextInt(max);
               return Image.network(
-                getBackdrop(images.elementAt(index).filePath!),
+                getBackdrop(
+                    controller.moviesBackdrops.elementAt(index).filePath!),
                 fit: BoxFit.fitWidth,
               );
             } else {
@@ -90,7 +92,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             child: CircularProgressIndicator(),
           );
         } else if (controller.movieDetailResponseHasResults) {
-          MovieDetail movieDetail = controller.movieDetailResponse!.value!;
+          MovieDetail movieDetail = controller.movieDetail;
           String formattedDate = "";
 
           var date = DateTime.parse(movieDetail.releaseDate.toString());
@@ -158,7 +160,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   height: 5,
                 ),
                 Text(
-                  "${controller.movieDetailResponse!.value!.overview!}",
+                  "${controller.movieDetail.overview!}",
                   style: new TextStyle(color: ColorsConstants.textDefaultColor),
                 ),
               ],
@@ -184,16 +186,14 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               child: CircularProgressIndicator(),
             );
           } else if (controller.movieRecommendationsResponseHasResults) {
-            var movies =
-                controller.movieRecommendationsResponse!.value!.results!;
-            return movies.length > 0
+            return controller.movieRecommendationsIsNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: movies.length,
+                    itemCount: controller.movieRecommendationsLenght,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return MovieItemWidget(
-                        movie: movies.elementAt(index),
+                        movie: controller.movieRecommendations.elementAt(index),
                         showOnlyImage: true,
                       );
                     },

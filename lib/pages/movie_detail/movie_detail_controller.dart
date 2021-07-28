@@ -1,5 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:top_movies/models/api_response.dart';
+import 'package:top_movies/models/backdrops.dart';
+import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
@@ -65,6 +67,27 @@ class MovieDetailController with Store {
   bool get movieRecommendationsResponseHasError =>
       movieRecommendationsResponse != null &&
       movieRecommendationsResponse?.status == FutureStatus.rejected;
+
+  //Movie images list
+  @computed
+  List<Backdrops> get moviesBackdrops => movieImagesResponse!.value!.backdrops!;
+  @computed
+  bool get moviesBackdropsIsNotEmpty => moviesBackdrops.isNotEmpty;
+  @computed
+  int get moviesBackdropsLenght => moviesBackdrops.length;
+
+  //Movies details
+  @computed
+  MovieDetail get movieDetail => movieDetailResponse!.value!;
+
+  //Movie recommendations
+  @computed
+  List<Movie> get movieRecommendations =>
+      movieRecommendationsResponse!.value!.results!;
+  @computed
+  bool get movieRecommendationsIsNotEmpty => movieRecommendations.isNotEmpty;
+  @computed
+  int get movieRecommendationsLenght => movieRecommendations.length;
 
   @action
   Future getMovieDetail({required int movieId}) async {
