@@ -59,13 +59,6 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (controller.genresResponseHasResults) {
-          var items = controller.genresResponse!.value!.genres!;
-          var genreSelectAll = Genres();
-          genreSelectAll.id = 0;
-          genreSelectAll.name = "All";
-          if (items.first.id != 0) {
-            items.insert(0, genreSelectAll);
-          }
           return DropdownButton<int>(
               value: selectedGenreId,
               icon: Icon(Icons.arrow_drop_down),
@@ -85,7 +78,8 @@ class _HomePageState extends State<HomePage> {
                       page: currentPage, genreId: selectedGenreId);
                 });
               },
-              items: items.map<DropdownMenuItem<int>>((Genres genre) {
+              items:
+                  controller.genres.map<DropdownMenuItem<int>>((Genres genre) {
                 return DropdownMenuItem<int>(
                   value: genre.id,
                   child: Text(genre.name!),
@@ -109,16 +103,15 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (controller.popularResponseHasResults) {
-          maxPage = controller.popularResponse!.value!.totalPages!;
-          var items = controller.popularResponse!.value!.results!;
+          maxPage = controller.popularMoviesResponsePages;
           return ListView.builder(
             shrinkWrap: true,
-            itemCount: items.length,
+            itemCount: controller.popularMoviesLength,
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return MovieItemWidget(
-                movie: items.elementAt(index),
+                movie: controller.popularMovies.elementAt(index),
               );
             },
           );
@@ -132,6 +125,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //Buttons to show page numbers
   List<Widget> _createFooterButtons() {
     if (currentPage > 1 && currentPage < maxPage) {
       return <Widget>[

@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:top_movies/models/api_response.dart';
+import 'package:top_movies/models/genres.dart';
 import 'package:top_movies/models/genres_api_response.dart';
 import 'package:top_movies/models/movie.dart';
 
@@ -18,6 +19,7 @@ class HomeController with Store {
   @observable
   ObservableFuture<GenresApiResponse>? genresResponse;
 
+  //Check API reponse
   @computed
   bool get popularResponseHasResults =>
       popularResponse != null &&
@@ -47,6 +49,24 @@ class HomeController with Store {
   @computed
   bool get genresResponseHasError =>
       genresResponse != null && genresResponse?.status == FutureStatus.rejected;
+
+  //Genre results
+  @computed
+  List<Genres> get genres {
+    List<Genres> genres = genresResponse!.value!.genres!;
+    var genreSelectAll = Genres();
+    genreSelectAll.id = 0;
+    genreSelectAll.name = "All";
+    if (genres.first.id != 0) {
+      genres.insert(0, genreSelectAll);
+    }
+    return genres;
+  }
+
+  //Popular movies results
+  List<Movie> get popularMovies => popularResponse!.value!.results!;
+  int get popularMoviesResponsePages => popularResponse!.value!.totalPages!;
+  int get popularMoviesLength => popularResponse!.value!.results!.length;
 
   @action
   Future getMovies({required int page, required int genreId}) async {
