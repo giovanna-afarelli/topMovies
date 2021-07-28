@@ -14,10 +14,9 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _filter = new TextEditingController();
   String _searchText = "";
-  List names = [];
-  List filteredNames = [];
+
   Icon _searchIcon = new Icon(Icons.search);
-  Widget _appBarTitle = new Text(Strings.searchTitle);
+  Widget _appBarTitle = new Text(Strings.searchHint);
   int _maxPage = 1;
   int _currentPage = 1;
 
@@ -30,7 +29,6 @@ class _SearchPageState extends State<SearchPage> {
       if (_filter.text.isEmpty) {
         setState(() {
           _searchText = "";
-          filteredNames = names;
         });
       } else {
         setState(() {
@@ -54,30 +52,15 @@ class _SearchPageState extends State<SearchPage> {
         this._appBarTitle = new TextField(
           controller: _filter,
           decoration: new InputDecoration(
-              prefixIcon: new Icon(Icons.search), hintText: 'Search...'),
+              prefixIcon: new Icon(Icons.search), hintText: Strings.searchHint),
         );
       } else {
         this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text(Strings.searchTitle);
-        filteredNames = names;
+        this._appBarTitle = new Text(Strings.searchHint);
+
         _filter.clear();
       }
     });
-  }
-
-  Widget _buildList() {
-    if (_searchText.isNotEmpty) {
-      List tempList = [];
-      for (int i = 0; i < filteredNames.length; i++) {
-        if (filteredNames[i]['name']
-            .toLowerCase()
-            .contains(_searchText.toLowerCase())) {
-          tempList.add(filteredNames[i]);
-        }
-      }
-      filteredNames = tempList;
-    }
-    return _createMoviesList();
   }
 
   Widget _createMoviesList() {
@@ -182,7 +165,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       backgroundColor: ColorsConstants.backgroundColor,
       body: Container(
-        child: _buildList(),
+        child: _createMoviesList(),
       ),
       persistentFooterButtons: _createFooterButtons(),
     );

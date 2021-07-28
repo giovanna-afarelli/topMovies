@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:top_movies/data/hive.dart';
 import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_controller.dart';
@@ -56,15 +55,25 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               child: CircularProgressIndicator(),
             );
           } else if (controller.movieImagesResponseHasResults) {
-            var random = new Random();
-            var index = random.nextInt(
-                controller.movieImagesResponse!.value!.backdrops!.length);
-            return Image.network(
-              getBackdrop(controller.movieImagesResponse!.value!.backdrops!
-                  .elementAt(index)
-                  .filePath!),
-              fit: BoxFit.fitWidth,
-            );
+            if (controller.movieImagesResponse!.value!.backdrops!.length >= 1) {
+              var random = new Random();
+              var max =
+                  controller.movieImagesResponse!.value!.backdrops!.length - 1;
+              if (max < 1) {
+                max = 1;
+              } else if (max > 1000) {
+                max = 1000;
+              }
+              var index = random.nextInt(max);
+              return Image.network(
+                getBackdrop(controller.movieImagesResponse!.value!.backdrops!
+                    .elementAt(index)
+                    .filePath!),
+                fit: BoxFit.fitWidth,
+              );
+            } else {
+              return Container();
+            }
           } else
             return Image.network(
               getImage(moviePoster),

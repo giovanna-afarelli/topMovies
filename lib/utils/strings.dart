@@ -11,6 +11,7 @@ class Strings {
   //SCREEN TITLES
   static const homePageTitle = "Top Movies";
   static const searchTitle = "Search Movies";
+  static const searchHint = "Type your search";
 
   //HOME PAGE
   static const selectGenreTitle = "Select a Genre: ";
