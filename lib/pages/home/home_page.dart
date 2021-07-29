@@ -116,8 +116,20 @@ class _HomePageState extends State<HomePage> {
             },
           );
         } else if (controller.popularResponseHasError) {
-          return Center(
-            child: Text("Erro"),
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 20,
+            ),
+            child: Center(
+              child: Text(
+                controller.popularResponseError,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: ColorsConstants.textDefaultColor,
+                  fontSize: 20,
+                ),
+              ),
+            ),
           );
         } else
           return Container();

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres.dart';
@@ -35,6 +38,23 @@ class HomeController with Store {
   bool get popularResponseHasError =>
       popularResponse != null &&
       popularResponse?.status == FutureStatus.rejected;
+
+  //Get the api response error for getPopularMovies
+  @computed
+  String get popularResponseError {
+    var errorMessage = " ";
+    if (popularResponseHasError) {
+      String error = ((popularResponse!.error) as DioError).response.toString();
+
+      try {
+        var decodedJson = json.decode(error);
+        errorMessage = decodedJson["status_message"];
+      } catch (e) {
+        errorMessage = " ";
+      }
+    }
+    return errorMessage;
+  }
 
   @computed
   bool get genresResponseHasResults =>
