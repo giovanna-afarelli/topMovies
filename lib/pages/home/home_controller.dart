@@ -6,13 +6,12 @@ import 'package:top_movies/models/api_response.dart';
 import 'package:top_movies/models/genres.dart';
 import 'package:top_movies/models/genres_api_response.dart';
 import 'package:top_movies/models/movie.dart';
-
-import 'home_repository.dart';
+import 'package:top_movies/network/repository.dart';
 
 class HomeController with Store {
-  final HomeRepository repository;
+  final Repository repository = Repository();
 
-  HomeController({required this.repository});
+  HomeController();
 
   @observable
   ObservableFuture<ApiResponse>? popularResponse;

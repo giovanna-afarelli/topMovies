@@ -5,7 +5,6 @@ import 'package:top_movies/models/movie.dart';
 import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/video_model.dart';
 import 'package:top_movies/pages/movie_detail/movie_detail_controller.dart';
-import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
 import 'package:top_movies/utils/app_routes.dart';
 import 'package:top_movies/utils/colors.dart';
 import 'package:top_movies/utils/functions.dart';
@@ -18,9 +17,7 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  MovieDetailController controller = MovieDetailController(
-    repository: MovieDetailRepository(),
-  );
+  MovieDetailController controller = MovieDetailController();
 
   @override
   void initState() {

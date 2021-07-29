@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:top_movies/models/genres.dart';
 import 'package:top_movies/pages/home/home_controller.dart';
-import 'package:top_movies/pages/home/home_repository.dart';
 import 'package:top_movies/utils/colors.dart';
 import 'package:top_movies/utils/strings.dart';
 import 'package:top_movies/widgets/movie_item_widget.dart';
@@ -17,9 +16,7 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 1;
   int maxPage = 1;
 
-  HomeController controller = HomeController(
-    repository: HomeRepository(),
-  );
+  HomeController controller = HomeController();
 
   @override
   void initState() {

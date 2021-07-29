@@ -1,11 +1,11 @@
 import 'package:mobx/mobx.dart';
 import 'package:top_movies/models/api_response.dart';
-import 'package:top_movies/pages/search/search_repository.dart';
+import 'package:top_movies/network/repository.dart';
 
 class SearchController with Store {
-  final SearchRepository repository;
+  final Repository repository = Repository();
 
-  SearchController({required this.repository});
+  SearchController();
 
   @observable
   ObservableFuture<ApiResponse>? searchResponse;

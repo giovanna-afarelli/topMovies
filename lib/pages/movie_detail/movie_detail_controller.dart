@@ -6,12 +6,12 @@ import 'package:top_movies/models/movie_detail.dart';
 import 'package:top_movies/models/movie_images.dart';
 import 'package:top_movies/models/video_model.dart';
 import 'package:top_movies/models/video_response.dart';
-import 'package:top_movies/pages/movie_detail/movie_detail_repository.dart';
+import 'package:top_movies/network/repository.dart';
 
 class MovieDetailController with Store {
-  final MovieDetailRepository repository;
+  final Repository repository = Repository();
 
-  MovieDetailController({required this.repository});
+  MovieDetailController();
 
   @observable
   ObservableFuture<MovieDetail>? movieDetailResponse;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:top_movies/pages/search/search_controller.dart';
-import 'package:top_movies/pages/search/search_repository.dart';
 import 'package:top_movies/utils/colors.dart';
 import 'package:top_movies/utils/strings.dart';
 import 'package:top_movies/widgets/movie_item_widget.dart';
@@ -20,9 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   int _maxPage = 1;
   int _currentPage = 1;
 
-  SearchController controller = SearchController(
-    repository: SearchRepository(),
-  );
+  SearchController controller = SearchController();
 
   _SearchPageState() {
     _filter.addListener(() {
